@@ -13,11 +13,11 @@ namespace MMMQOL {
             public static void Postfix(SetUITextToVersionNumber __instance) {
                 Text component = __instance.GetComponent<Text>();
                 if (component != null) {
-                    component.text = component.text + "\n+MMMQOL-0.1";
+                    component.text = component.text + " +MMMQOL-0.1";
                 }
                 TextMeshProUGUI component2 = __instance.GetComponent<TextMeshProUGUI>();
                 if (component2 != null) {
-                    component2.text = component2.text + "\n+MMMQOL-0.1";
+                    component2.text = component2.text + " +MMMQOL-0.1";
                 }
             }
         }
