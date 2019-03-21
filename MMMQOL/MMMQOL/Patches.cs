@@ -46,7 +46,7 @@ namespace MMMQOL {
                 int racesLeft = 0;
                 List<RaceEventDetails> calendar = Game.instance.player.team.championship.calendar;
                 foreach (RaceEventDetails details in calendar)
-                    if (details.hasEventEnded) {
+                    if (!details.hasEventEnded) {
                         racesLeft++;
                     }
                 __instance.overallCostPerRace.text += "\n(Rest Of Season: " + GameUtility.GetCurrencyStringWithSign(num2 * (long)racesLeft, 0) + ")";
