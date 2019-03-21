@@ -7,17 +7,17 @@ using UnityEngine.UI;
 
 namespace MMMQOL {
     class Patches {
-
+        static string version = " +MMMQOL-0.1.1";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
                 Text component = __instance.GetComponent<Text>();
                 if (component != null) {
-                    component.text = component.text + " +MMMQOL-0.1";
+                    component.text += version;
                 }
                 TextMeshProUGUI component2 = __instance.GetComponent<TextMeshProUGUI>();
                 if (component2 != null) {
-                    component2.text = component2.text + " +MMMQOL-0.1";
+                    component2.text += version;
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace MMMQOL {
                 int num3 = num2 - 2;
                 num3 = ((num3 > 0 || num2 <= 1) ? num3 : 1);
                 if (num3 > 0) {
-                    __instance.estimatedLapsLabel.SetText(num3.ToString() + " - " + num2.ToString() + " (" + num3 / 4 * 3 + ")");
+                    __instance.estimatedLapsLabel.SetText(num3.ToString() + " - " + num2.ToString() + " (" + Mathf.FloorToInt((num-2f) / 4f * 3f) + ")");
                 }
             }
         }
@@ -50,6 +50,9 @@ namespace MMMQOL {
                         racesLeft++;
                     }
                 __instance.overallCostPerRace.text += "\n(Rest Of Season: " + GameUtility.GetCurrencyStringWithSign(num2 * (long)racesLeft, 0) + ")";
+                Finance finance = Game.instance.player.team.financeController.finance;
+                __instance.overallBalance[0].text += "\n(Budget Left: " + GameUtility.GetCurrencyStringWithSign(finance.currentBudget + num2 * (long)racesLeft, 0) + ")";
+
             }
         }
 
