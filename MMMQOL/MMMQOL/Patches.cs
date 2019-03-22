@@ -1,5 +1,7 @@
 ﻿using Harmony;
 using MM2;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace MMMQOL {
     class Patches {
-        static string version = " +MMMQOL-0.1.1";
+        static string version = " +MMMQOL-0.2";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
@@ -66,6 +68,44 @@ namespace MMMQOL {
                     GameUtility.GetCurrencyString((long)(___mSponsorContract.upfrontValue / ___mSponsorContract.contractTotalRaces) + (long)___mSponsorContract.bonusValuePerRace, 0);
             }
         }
+
+        [HarmonyPatch(typeof(StartUpState), "Update")]
+        public static class StartUpState_Update_Patch {
+            public static bool Prefix(StartUpState __instance, LegalScreen ___mLegalScreen, ref StartUpState.State ___mState) {
+                if (___mState != StartUpState.State.SplashSequence) {
+                    return false;
+                }
+                if (UIManager.instance.IsScreenSetLoaded(UIManager.ScreenSet.StartUp) && SceneManager.instance.HasSceneSetLoaded(SceneSet.SceneSetType.Core)) {
+                    App.instance.StartCoroutine(Initialise(___mLegalScreen));
+                    ___mState = StartUpState.State.LoadNavigationAndDialogs;
+                }
+                return false;
+
+            }
+
+            private static IEnumerator Initialise(LegalScreen mLegalScreen) {
+                if (App.instance.database == null) {
+                    App.instance.Initialise();
+                }
+                while (!App.instance.isInitialised) {
+                    yield return null;
+                }
+                yield return UIManager.instance.LoadNavigationOnly();
+                if (PlayerPrefs.GetInt("AcceptedPrivacyPolicy", 0) == 0) {
+                    mLegalScreen.privacyPolicy.SetActive(true);
+                }
+                else {
+                    App.instance.gameStateManager.LoadToTitleScreen(GameStateManager.StateChangeType.CheckForFadedScreenChange);
+                }
+                yield break;
+            }
+        }
+
+        
+
+
+
+
 
     }
 }
