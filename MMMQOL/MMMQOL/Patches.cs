@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace MMMQOL {
     class Patches {
-        static string version = " +MMMQOL-0.2";
+        static string version = " +MMMQOL-0.4";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
@@ -33,6 +33,29 @@ namespace MMMQOL {
                 num3 = ((num3 > 0 || num2 <= 1) ? num3 : 1);
                 if (num3 > 0) {
                     __instance.estimatedLapsLabel.SetText(num3.ToString() + " - " + num2.ToString() + " (" + Mathf.FloorToInt((num-2f) / 4f * 3f) + ")");
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(PracticeResultsScreen), "OnEnter")]
+        public static class PracticeResultsScreen_OnEnter_Patch {
+            public static void Postfix(PracticeResultsScreen __instance) {            
+                if (Game.instance.gameType == Game.GameType.Career && (!Game.instance.challengeManager.IsAttemptingChallenge() || 
+                    Game.instance.challengeManager.currentChallenge.type != Challenge.ChallengeType.SingleRace)) {
+                    Game.instance.queuedAutosave = true;
+                    App.instance.saveSystem.TryDispatchDelayedAutoSave();
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(QualifyingResultsScreen), "OnEnter")]
+        public static class QualifyingResultsScreen_OnEnter_Patch {
+            public static void Postfix(QualifyingResultsScreen __instance) {
+                Game.instance.queuedAutosave = true;
+                if (Game.instance.gameType == Game.GameType.Career && (!Game.instance.challengeManager.IsAttemptingChallenge() ||
+                    Game.instance.challengeManager.currentChallenge.type != Challenge.ChallengeType.SingleRace)) {
+                    Game.instance.queuedAutosave = true;
+                    App.instance.saveSystem.TryDispatchDelayedAutoSave();
                 }
             }
         }
@@ -69,6 +92,16 @@ namespace MMMQOL {
             }
         }
 
+        [HarmonyPatch(typeof(UIScoutingSearchResultsWidget), "ApplyFilterView")]
+        public static class UIScoutingSearchResultsWidget_ApplyFilterView_Patch {
+            public static void Postfix(UIScoutingSearchResultsWidget __instance, Person inPerson, ref bool __result) {
+                UIScoutingFilterView.Filter filter = __instance.filterView;
+                if (filter == UIScoutingFilterView.Filter.Favourites) {
+                    __result = inPerson.GetInterestedToTalkReaction(Game.instance.player.team) == Person.InterestedToTalkResponseType.InterestedToTalk;
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(StartUpState), "Update")]
         public static class StartUpState_Update_Patch {
             public static bool Prefix(StartUpState __instance, LegalScreen ___mLegalScreen, ref StartUpState.State ___mState) {
@@ -100,12 +133,5 @@ namespace MMMQOL {
                 yield break;
             }
         }
-
-        
-
-
-
-
-
     }
 }
