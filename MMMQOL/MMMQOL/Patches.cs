@@ -13,7 +13,7 @@ namespace MMMQOL
 {
     class Patches
     {
-        static string version = " +MMMQOL-0.12";
+        static string version = " +MMMQOL-0.13";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch
         {
@@ -28,6 +28,90 @@ namespace MMMQOL
                 }
             }
         }
+
+        [HarmonyPatch(typeof(PersonCareerWidget), "SetGrid")]
+        public static class PersonCareerWidget_SetGrid_Patch
+        {
+            public static void Prefix(PersonCareerWidget __instance, Person ___mPerson) {
+                List<CareerHistoryEntry> removals = new List<CareerHistoryEntry>();
+                foreach(CareerHistoryEntry history in ___mPerson.careerHistory.career) {
+                    if(history.races <= 0) {
+                        removals.Add(history);
+                    }
+                }
+                foreach (CareerHistoryEntry history in removals) {
+                    ___mPerson.careerHistory.RemoveHistory(history);
+                }
+            }
+        }
+
+      /*  [HarmonyPatch(typeof(Championship), "GetChampionshipName")]
+        public static class Championship_GetChampionshipName_Patch
+        {
+            public static void Prefix(ref Championship __instance) {
+                if(__instance.series == Championship.Series.SingleSeaterSeries) {
+                    if(__instance.championshipOrderRelative == 0) {
+                        __instance.customChampionshipName = "World Motorsport Championship";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customChampionshipName = "Asia Pacific Cup";
+                    }
+                    if (__instance.championshipOrderRelative == 2) {
+                        __instance.customChampionshipName = "European Racing Series";
+                    }
+                }
+                if (__instance.series == Championship.Series.GTSeries) {
+                    if (__instance.championshipOrderRelative == 0) {
+                        __instance.customChampionshipName = "International GT Championship";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customChampionshipName = "GT Challenger Series";
+                    }
+                }
+                if (__instance.series == Championship.Series.EnduranceSeries) {
+                    if (__instance.championshipOrderRelative == 0) {
+                        __instance.customChampionshipName = "International Endurance Cup";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customChampionshipName = "International Endurance Cup(Class B)";
+                    }
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Championship), "GetAcronym")]
+        public static class Championship_GetAcronym_Patch
+        {
+            public static void Prefix(ref Championship __instance) {
+                if (__instance.series == Championship.Series.SingleSeaterSeries) {
+                    if (__instance.championshipOrderRelative == 0) {
+                        __instance.customAcronym = "WMC";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customAcronym = "APC";
+                    }
+                    if (__instance.championshipOrderRelative == 2) {
+                        __instance.customAcronym = "ERS";
+                    }
+                }
+                if (__instance.series == Championship.Series.GTSeries) {
+                    if (__instance.championshipOrderRelative == 0) {
+                        __instance.customAcronym = "IGTC";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customAcronym = "GTCS";
+                    }
+                }
+                if (__instance.series == Championship.Series.EnduranceSeries) {
+                    if (__instance.championshipOrderRelative == 0) {
+                        __instance.customAcronym = "IEC";
+                    }
+                    if (__instance.championshipOrderRelative == 1) {
+                        __instance.customAcronym = "IEC-B";
+                    }
+                }
+            }
+        }*/
 
         [HarmonyPatch(typeof(UIStat), "SetStat")]
         public static class UIStat_SetStat_Patch
