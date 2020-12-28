@@ -13,7 +13,7 @@ namespace MMMQOL
 {
     class Patches
     {
-        static string version = " +MMMQOL-0.13";
+        static string version = " +MMMQOL-0.14";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch
         {
@@ -25,6 +25,16 @@ namespace MMMQOL
                 TextMeshProUGUI component2 = __instance.GetComponent<TextMeshProUGUI>();
                 if (component2 != null) {
                     component2.text += version;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Team), "SelectDriverForSession")]
+        public static class Team_SelectDriverForSession_Patch
+        {
+            public static void Prefix(Team __instance, ref Driver inDriver) {
+                if (inDriver.IsReserveDriver()) {
+                    inDriver.SetCarID(-1);
                 }
             }
         }
