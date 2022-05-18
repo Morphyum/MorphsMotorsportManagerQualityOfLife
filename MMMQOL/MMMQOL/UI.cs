@@ -204,5 +204,57 @@ namespace MMMQOL {
                 }
             }
         }
+
+        [HarmonyPatch(typeof(UIDriverInfo), "Update")]
+        public static class UIDriverInfo_Update_Patch {
+            public static void Postfix(UIDriverInfo __instance, RacingVehicle ___mVehicle) {
+                if(__instance.tyreWearLabel != null) {
+
+                    if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.UltraSoft) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.30f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
+                            __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else {
+                            __instance.tyreWearLabel.color = UIConstants.positiveColor;
+                        }
+                    } else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.SuperSoft) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.25f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
+                            __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else {
+                            __instance.tyreWearLabel.color = UIConstants.positiveColor;
+                        }
+                    } else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Soft) {
+                        Logger.LogLine(___mVehicle.setup.tyreSet.GetCondition().ToString());
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
+                            __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else {
+                            __instance.tyreWearLabel.color = UIConstants.positiveColor;
+                        }
+                    } else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Medium) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.05f) {
+                            __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else {
+                            __instance.tyreWearLabel.color = UIConstants.positiveColor;
+                        }
+
+                    } else {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.00f) {
+                            __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else {
+                            __instance.tyreWearLabel.color = UIConstants.positiveColor;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
