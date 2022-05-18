@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace MMMQOL {
     class UI {
 
-        static string version = " +MMMQOL-1.0";
+        static string version = " +MMMQOL-1.1";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
@@ -147,9 +147,9 @@ namespace MMMQOL {
             }
         }
 
-        [HarmonyPatch(typeof(UIDriverInfo), "Update")]
-        public static class UIDriverInfo_Update_Patch {
-            public static void Postfix(UIDriverInfo __instance, RacingVehicle ___mVehicle) {
+        [HarmonyPatch(typeof(DriverWidget), "UpdateTyreWear")]
+        public static class DriverWidget_UpdateTyreWear_Patch {
+            public static void Postfix(DriverWidget __instance, RacingVehicle ___mVehicle) {
                 if(__instance.tyreWearLabel != null) {
 
                     if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.UltraSoft) {
@@ -173,6 +173,7 @@ namespace MMMQOL {
                     }
 
                     else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Soft) {
+                        Logger.LogLine(___mVehicle.setup.tyreSet.GetCondition().ToString());
                         if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
                             __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
