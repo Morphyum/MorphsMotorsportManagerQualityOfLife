@@ -102,9 +102,19 @@ namespace MMMQOL {
         public static class PersonCareerWidget_SetGrid_Patch {
             public static void Prefix(PersonCareerWidget __instance, Person ___mPerson) {
                 List<CareerHistoryEntry> removals = new List<CareerHistoryEntry>();
+                Dictionary<int, int> years = new Dictionary<int, int>();
+                foreach(CareerHistoryEntry history in ___mPerson.careerHistory.career) {
+                    if(years.ContainsKey(history.year)) {
+                        years[history.year]++;
+                    } else {
+                        years.Add(history.year, 1);
+                    }
+                }
                 foreach(CareerHistoryEntry history in ___mPerson.careerHistory.career) {
                     if(history.races <= 0) {
-                        removals.Add(history);
+                        if(years[history.year] > 1) {
+                            removals.Add(history);
+                        }
                     }
                 }
                 foreach(CareerHistoryEntry history in removals) {

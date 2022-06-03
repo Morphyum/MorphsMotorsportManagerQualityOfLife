@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace MMMQOL {
     class UI {
 
-        static string version = " +MMMQOL-1.1";
+        static string version = " +MMMQOL-1.2.1";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
@@ -153,20 +153,20 @@ namespace MMMQOL {
                 if(__instance.tyreWearLabel != null) {
 
                     if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.UltraSoft) {
-                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.30f) {
-                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
-                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.30f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
                     }
 
                     else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.SuperSoft) {
-                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.25f) {
-                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
-                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.25f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
@@ -174,29 +174,29 @@ namespace MMMQOL {
 
                     else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Soft) {
                         Logger.LogLine(___mVehicle.setup.tyreSet.GetCondition().ToString());
-                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
-                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
-                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
                     }
 
                     else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Medium) {
-                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
-                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
-                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.05f) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.05f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.15f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
 
                     } else {
-                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
-                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
-                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.00f) {
+                        if(___mVehicle.setup.tyreSet.GetCondition() <= 0.00f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
+                        } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
+                            __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
