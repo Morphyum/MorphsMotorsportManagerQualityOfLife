@@ -7,18 +7,14 @@ namespace MMMQOL {
         public static class Team_IncreaseDriverHistoryStat_Patch {
             public static bool Prefix(Team __instance, Driver inDriver) {
                 if(inDriver == null) {
-                    Logger.LogLine("IncreaseDriverHistoryStat No Driver");
                     return false;
                 }
                 if(inDriver.careerHistory == null) {
-                    Logger.LogLine("IncreaseDriverHistoryStat No career History");
                     inDriver.GenerateCareerHistory();
                 }
                 if(inDriver.careerHistory.currentEntry == null) {
-                    Logger.LogLine("IncreaseDriverHistoryStat No currentEntry");
                     inDriver.careerHistory.AddHistory();
                 }
-                Logger.LogLine("IncreaseDriverHistoryStat Driver found");
                 return true;
             }
         }

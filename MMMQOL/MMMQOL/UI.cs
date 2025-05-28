@@ -173,7 +173,6 @@ namespace MMMQOL {
                     }
 
                     else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Soft) {
-                        Logger.LogLine(___mVehicle.setup.tyreSet.GetCondition().ToString());
                         if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
                             __instance.tyreWearLabel.color = UIConstants.negativeColor;
                         } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
@@ -227,7 +226,6 @@ namespace MMMQOL {
                             __instance.tyreWearLabel.color = UIConstants.positiveColor;
                         }
                     } else if(___mVehicle.setup.tyreSet.GetCompound() == TyreSet.Compound.Soft) {
-                        Logger.LogLine(___mVehicle.setup.tyreSet.GetCondition().ToString());
                         if(___mVehicle.setup.tyreSet.GetCondition() <= 0.20f) {
                             __instance.tyreWearLabel.color = UIConstants.colorBandYellow;
                         } else if(___mVehicle.setup.tyreSet.GetCondition() <= 0.10f) {
