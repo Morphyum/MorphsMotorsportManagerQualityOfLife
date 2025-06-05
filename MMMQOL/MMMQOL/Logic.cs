@@ -105,6 +105,13 @@ namespace MMMQOL
                 if (filter == UIScoutingFilterView.Filter.Favourites) {
                     __result = inPerson.GetInterestedToTalkReaction(Game.instance.player.team) == Person.InterestedToTalkResponseType.InterestedToTalk;
                 }
+                else if (filter == UIScoutingFilterView.Filter.Scouted)
+                {
+                    if (inPerson is Driver) {
+                        Driver driver = inPerson as Driver;
+                        __result = driver.personalityTraitController.IsPayDriver() && driver.hasBeenScouted && inPerson.GetInterestedToTalkReaction(Game.instance.player.team) == Person.InterestedToTalkResponseType.InterestedToTalk;
+                    }
+                }
             }
         }
 
@@ -120,7 +127,7 @@ namespace MMMQOL
                 }
                 if (inPerson is Driver) {
                     Driver driver = inPerson as Driver;
-                    if (driver.hasBeenScouted) {
+                    if (driver.personalityTraitController.IsPayDriver() && driver.hasBeenScouted && inPerson.GetInterestedToTalkReaction(Game.instance.player.team) == Person.InterestedToTalkResponseType.InterestedToTalk) {
                         Notification mNotificationScouted = (Notification)AccessTools.Field(typeof(UIScoutingSearchResultsWidget), "mNotificationScouted").GetValue(__instance);
                         mNotificationScouted.IncrementCount();
                     }

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace MMMQOL {
     class UI {
 
-        static string version = " +MMMQOL-1.2.1";
+        static string version = " +MMMQOL-1.3";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
