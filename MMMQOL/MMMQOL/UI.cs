@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace MMMQOL {
     class UI {
 
-        static string version = " +MMMQOL-1.3";
+        static string version = " +MMMQOL-1.4";
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch {
             public static void Postfix(SetUITextToVersionNumber __instance) {
@@ -56,11 +56,20 @@ namespace MMMQOL {
         public static class TyreInfoRollover_Show_Patch {
             public static void Postfix(TyreInfoRollover __instance, TyreSet inTyreSet, Circuit inCircuit) {
                 float num = TyreSet.CalculateLapRangeOfTyre(inTyreSet, GameUtility.MilesToMeters(inCircuit.trackLengthMiles)) * inTyreSet.GetCondition();
-                int num2 = Mathf.FloorToInt(num);
-                int num3 = num2 - 2;
-                num3 = ((num3 > 0 || num2 <= 1) ? num3 : 1);
-                if(num3 > 0) {
-                    __instance.estimatedLapsLabel.SetText(num3.ToString() + " - " + num2.ToString() + " (" + Mathf.FloorToInt((num - 2f) / 4f * 3f) + ")");
+                int calculatedMax = Mathf.FloorToInt(num);
+                int calculatedMin = calculatedMax - 2;
+                calculatedMin = ((calculatedMin > 0 || calculatedMax <= 1) ? calculatedMin : 1);
+                
+                float multiplier;
+                switch (inTyreSet.GetCompound()) {
+                    case TyreSet.Compound.UltraSoft: multiplier = 1 - 0.3f; break;
+                    case TyreSet.Compound.SuperSoft: multiplier = 1 - 0.25f; break;
+                    case TyreSet.Compound.Soft: multiplier = 1 - 0.2f; break;
+                    case TyreSet.Compound.Medium: multiplier = 1 - 0.15f; break;
+                    default: multiplier = 1 - 0.1f; break;
+                }
+                if(calculatedMin > 0) {
+                    __instance.estimatedLapsLabel.SetText(calculatedMin + " - " + calculatedMax + " (" + Mathf.FloorToInt(calculatedMin * multiplier) + ")");
                 }
             }
         }
