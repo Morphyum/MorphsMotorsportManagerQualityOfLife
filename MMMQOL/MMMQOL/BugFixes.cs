@@ -118,5 +118,16 @@ namespace MMMQOL {
                 }
             }
         }
+        
+        [HarmonyPatch(typeof(Driver), "carID", MethodType.Getter)]
+        public static class Driver_CarID_Getter_Patch
+        {
+            public static bool Prefix(Driver __instance, ref int __result) {
+                if (__instance.IsReserveDriver())
+                    __result = -1;
+                __result = __instance.contract.GetTeam().GetDriver(0) == __instance ? 0 : 1;
+                return false;
+            }
+        }
     }
 }
