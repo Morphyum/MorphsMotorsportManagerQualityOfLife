@@ -129,5 +129,17 @@ namespace MMMQOL {
                 return false;
             }
         }
+        
+        [HarmonyPatch(typeof(Mechanic), "GetRelationshipWithDriver")]
+        public static class Mechanic_GetRelationshipWithDriver_Patch
+        {
+            public static bool Prefix(Mechanic __instance, Driver inDriver) {
+                if (!__instance.allDriverRelationships.ContainsKey(inDriver.name))
+                {
+                    __instance.SetDriverRelationship(inDriver.name, 0, 0);
+                }
+                return true;
+            }
+        }
     }
 }

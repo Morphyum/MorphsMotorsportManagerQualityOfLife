@@ -10,7 +10,7 @@ namespace MMMQOL
 {
     class UI
     {
-        static string _version = " +MMMQOL-1.6";
+        static string _version = " +MMMQOL-1.7";
 
         [HarmonyPatch(typeof(SetUITextToVersionNumber), "Awake")]
         public static class SetUITextToVersionNumber_Awake_Patch
